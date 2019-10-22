@@ -10,5 +10,6 @@ public final class UIColor {
 
     public static final int BLACK = Color.BLACK.getRGB();
     public static final int WHITE = Color.WHITE.getRGB();
+    public static final int BLUE = Color.BLUE.getRGB();
 
 }

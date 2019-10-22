@@ -9,10 +9,10 @@ public abstract class Renderer {
     public abstract void preRender();
 
     public void color(int color) {
-        glColor4i(((color >> 16) & 0xFF) / 255,
-                ((color >> 8) & 0xFF) / 255,
-                ((color >> 0) & 0xFF) / 255,
-                ((color >> 24) & 0xFF) / 255);
+        glColor4f(((color >> 16) & 0xFF) / 255.0f,
+                ((color >> 8) & 0xFF) / 255.0f,
+                ((color >> 0) & 0xFF) / 255.0f,
+                ((color >> 24) & 0xFF) / 255.0f);
     }
 
     public Renderer drawLine(float startX, float startY, float endX, float endY) {
