@@ -1,30 +1,28 @@
 package io.github.splotycode.guilib.layout;
 
-import lombok.AllArgsConstructor;
+import io.github.splotycode.guilib.component.UIComponent;
+import io.github.splotycode.guilib.component.UIMaster;
 
-@AllArgsConstructor
-public class StaticConstrains implements Constrains {
+public class StaticConstrains extends AbstractConstrains {
 
-    private float x, y, width, height;
-
-    @Override
-    public float x() {
-        return x;
+    public StaticConstrains(float x, float y, float width, float height) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
     }
 
     @Override
-    public float y() {
-        return y;
+    public void calculate(UIComponent component, UIMaster master, Constrains parent) {}
+
+    public void setPosition(float x, float y) {
+        this.x = x;
+        this.y = y;
     }
 
-    @Override
-    public float width() {
-        return width;
-    }
-
-    @Override
-    public float height() {
-        return height;
+    public void setSize(float width, float height) {
+        this.width = width;
+        this.height = height;
     }
 
 }
