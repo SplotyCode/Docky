@@ -1,6 +1,7 @@
 package io.github.splotycode.guilib.font;
 
 import io.github.splotycode.mosaik.util.ExceptionUtil;
+import io.github.splotycode.mosaik.util.io.IOUtil;
 import lombok.Getter;
 
 import java.io.*;
@@ -21,9 +22,9 @@ public class FontFile {
 
     private int textureAtlas;
 
-    public FontFile(int textureAtlas, File file) {
+    public FontFile(int textureAtlas, String file) {
         this.textureAtlas = textureAtlas;
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(IOUtil.resourceToURL(file).openStream()))) {
             this.reader = reader;
 
             next();
@@ -43,14 +44,14 @@ public class FontFile {
                     spaceWidth = getIntVariable("xadvance") - paddingWidth;
                     continue;
                 }
-                float xTex = ((float) getIntVariable("x") + (padding[1] - 3)) / imageSize;
-                float yTex = ((float) getIntVariable("y") + (padding[0] - 3)) / imageSize;
-                int width = getIntVariable("width") - (paddingWidth - (2 * 3));
-                int height = getIntVariable("height") - ((paddingHeight) - (2 * 3));
-                float xTexSize = (float) width / imageSize;
-                float yTexSize = (float) height / imageSize;
-                float xOffset = (getIntVariable("xoffset") + padding[1] - 3); /* Don't know aspect ratio */
-                float yOffset = (getIntVariable("yoffset") + (padding[0] - 3)) * verticalPerPixelSize;
+                float xTex = ((float) getIntVariable("x") + (padding[1] - getPadding())) / imageSize;
+                float yTex = ((float) getIntVariable("y") + (padding[0] - getPadding())) / imageSize;
+                float width = getIntVariable("width") - (paddingWidth - (2 * 3));
+                float height = getIntVariable("height") - ((paddingHeight) - (2 * getPadding()));
+                float xTexSize = width / imageSize;
+                float yTexSize = height / imageSize;
+                float xOffset = (getIntVariable("xoffset") + padding[1] - getPadding()); /* Don't know aspect ratio */
+                float yOffset = (getIntVariable("yoffset") + (padding[0] - getPadding())) * verticalPerPixelSize;
                 float xAdvance = (getIntVariable("xadvance") - paddingWidth); /* Don't know aspect ratio */
                 characters.put(id, new CharData(id,
                         xTex, yTex, /* Texture start */
@@ -63,6 +64,7 @@ public class FontFile {
         } catch (IOException e) {
             ExceptionUtil.throwRuntime(e);
         }
+        //System.out.println("my: " + characters);
     }
 
     private boolean doNext() throws IOException {
@@ -85,7 +87,7 @@ public class FontFile {
     }
 
     private int[] getIntArrayVariable(String name) {
-        String numbers[] = getVariable(name).split(",");
+        String[] numbers = getVariable(name).split(",");
         int[] ints = new int[numbers.length];
         for (int i = 0; i < numbers.length; i++) {
             ints[i] = Integer.parseInt(numbers[i]);
@@ -93,8 +95,24 @@ public class FontFile {
         return ints;
     }
 
+    /*public FontFile removeEdges() {
+        float minY = Integer.MAX_VALUE;
+        for (CharData data : characters.values()) {
+            minY = Math.min(minY, data.getYOffset());
+        }
+        for (CharData data : characters.values()) {
+            data.yOffset -= minY;
+        }
+        return this;
+    }*/
+
+    private float getPadding() {
+        return 3;
+    }
+
     private void next() throws IOException {
-        currentLine = reader.readLine().split(" ");
+        String line = reader.readLine();
+        currentLine = line == null ? null : line.split(" ");
     }
 
     public float realSpaceWidth(float aspectRatio) {

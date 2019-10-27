@@ -5,12 +5,13 @@ import lombok.Data;
 import lombok.Getter;
 
 @AllArgsConstructor
+@Getter
 public class CharData {
 
     @Getter private final int id;
     @Getter private final float xTexture, yTexture;
     private final float xOffset;
-    @Getter private final float yOffset;
+    @Getter float yOffset;
     private final float sizeX;
     @Getter private final float sizeY;
     @Getter private final float xTextureEnd, yTextureEnd;
@@ -29,4 +30,17 @@ public class CharData {
         return xOffset * (font.getVerticalPerPixelSize() / aspectRatio);
     }
 
+
+    @Override
+    public String toString() {
+        return "CharData{" +
+                "id=" + id +
+                ", xTexture=" + xTexture +
+                ", yTexture=" + yTexture +
+                ", yOffset=" + yOffset +
+                ", sizeY=" + sizeY +
+                ", xTextureEnd=" + xTextureEnd +
+                ", yTextureEnd=" + yTextureEnd +
+                '}';
+    }
 }

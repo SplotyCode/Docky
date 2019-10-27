@@ -10,7 +10,7 @@ public class FontShader extends Shader {
     private int locationTranslation;
 
     public FontShader() {
-        super("io/github/splotycode/guilib/font/fontVertex.txt", "io/github/splotycode/guilib/font/fontFragment.txt");
+        super("io/github/splotycode/guilib/font/fontVertex.glsl", "io/github/splotycode/guilib/font/fontFragment.glsl");
     }
 
     @Override

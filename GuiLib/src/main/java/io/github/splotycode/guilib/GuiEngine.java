@@ -1,13 +1,14 @@
 package io.github.splotycode.guilib;
 
+import io.github.splotycode.guilib.font.FontFile;
 import io.github.splotycode.guilib.font.FontRenderer;
 import io.github.splotycode.guilib.render.RenderLoader;
 import io.github.splotycode.guilib.window.Window;
 import lombok.Getter;
 import org.lwjgl.glfw.GLFW;
-import org.lwjgl.glfw.GLFWWindowCloseCallback;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 @Getter
 public class GuiEngine {
@@ -16,6 +17,13 @@ public class GuiEngine {
 
     private RenderLoader loader;
     private FontRenderer renderer;
+
+    private HashMap<String, FontFile> fonts = new HashMap<>();
+
+    public void loadFont(String name, String path) {
+        //TODO
+
+    }
 
     private ArrayList<Window> windows = new ArrayList<>();
 
@@ -49,11 +57,11 @@ public class GuiEngine {
     }
 
     public void shutdown() {
+        renderer.shutdown();
+        loader.cleanUp();
         for (Window window : windows) {
             window.destroy();
         }
-        renderer.shutdown();
-        loader.cleanUp();
         Window.shutdownGLFW();
     }
 

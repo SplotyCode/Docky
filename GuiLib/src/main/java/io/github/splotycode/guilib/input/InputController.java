@@ -14,8 +14,11 @@ import static org.lwjgl.system.MemoryStack.stackPush;
 @Getter
 public class InputController implements GLFWKeyCallbackI {
 
-    private double mouseX, mouseY;
     private Window window;
+
+    private float mouseX, mouseY;
+    private float lastMouseX, lastMouseY;
+
     private HashMap<Integer, PressData> inputs = new HashMap<>();
 
     public InputController(Window window) {
@@ -35,12 +38,14 @@ public class InputController implements GLFWKeyCallbackI {
     }
 
     public void update() {
+        lastMouseX = mouseX;
+        lastMouseY = mouseY;
         try (MemoryStack stack = stackPush()) {
             DoubleBuffer x = stack.mallocDouble(1);
             DoubleBuffer y = stack.mallocDouble(1);
             GLFW.glfwGetCursorPos(window.getWindowID(), x, y);
-            mouseX = x.get(0);
-            mouseY = y.get(0);
+            mouseX = (float) x.get(0);
+            mouseY = (float) y.get(0);
         }
 
         /*System.out.println("start");
@@ -48,6 +53,22 @@ public class InputController implements GLFWKeyCallbackI {
             System.out.println(key.getKey() + " " + key.getValue().getState() + " " +  key.getValue().getPressedTicks() + " " + key.getValue().getRepressed());
         }
         System.out.println("end");*/
+    }
+
+    public boolean isLeftClicked() {
+        return leftMouseData() != null;
+    }
+
+    public boolean isRigthClicked() {
+        return rigthMouseData() != null;
+    }
+
+    public PressData leftMouseData() {
+        return inputs.get(GLFW.GLFW_MOUSE_BUTTON_LEFT);
+    }
+
+    public PressData rigthMouseData() {
+        return inputs.get(GLFW.GLFW_MOUSE_BUTTON_LEFT);
     }
 
     @Override

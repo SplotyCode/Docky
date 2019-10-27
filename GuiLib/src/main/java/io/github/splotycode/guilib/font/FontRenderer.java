@@ -15,7 +15,7 @@ public class FontRenderer {
 
     public void render(Text text) {
         shader.start();
-        GL13.glActiveTexture(GL13.GL_ACTIVE_TEXTURE);
+        GL13.glActiveTexture(GL13.GL_TEXTURE0);
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, text.getFont().getTextureAtlas());
 
         GL30.glBindVertexArray(text.getTextMeshVao());

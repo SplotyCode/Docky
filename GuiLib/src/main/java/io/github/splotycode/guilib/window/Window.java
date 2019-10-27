@@ -88,6 +88,10 @@ public class Window {
         glfwSetWindowSize(windowID, width, height);
     }
 
+    public float acpectRatio() {
+        return (float) width / height;
+    }
+
     public void resize0(int width, int height) {
         this.width = width;
         this.height = height;
@@ -96,13 +100,14 @@ public class Window {
 
     public void normalize() {
         glViewport(0, 0, width, height);
-        glMatrixMode(GL_PROJECTION);
-        glLoadIdentity();
-        glOrtho(0, width, height, 0, 1, -1);
+        //glMatrixMode(GL_PROJECTION);
+        //glLoadIdentity();
+        //glOrtho(0, width, height, 0, 1, -1);
     }
 
     public void fullRender() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        master.update();
         master.render();
         render();
     }
