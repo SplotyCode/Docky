@@ -18,7 +18,10 @@ public class RenderContext {
 
     protected UIComponent component;
     protected UIComponent parent;
+
     protected Constrains constrains;
+    @Setter protected Constrains parentConstrains;
+
     @Setter protected UIMaster master;
 
     protected InputUser inputUser = InputUser.create();
@@ -80,6 +83,14 @@ public class RenderContext {
 
     public Constrains getWindowConstrains() {
         return master.getConstrains();
+    }
+
+    public float windowWidth() {
+        return getWindow().getWidth();
+    }
+
+    public float windowHeigth() {
+        return getWindow().getHeight();
     }
 
     public Window getWindow() {

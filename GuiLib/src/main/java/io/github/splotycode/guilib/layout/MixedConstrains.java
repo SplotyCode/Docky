@@ -2,6 +2,7 @@ package io.github.splotycode.guilib.layout;
 
 import io.github.splotycode.guilib.component.UIComponent;
 import io.github.splotycode.guilib.component.UIMaster;
+import io.github.splotycode.guilib.render.RenderContext;
 
 public class MixedConstrains extends AbstractConstrains {
 
@@ -24,14 +25,14 @@ public class MixedConstrains extends AbstractConstrains {
     }
 
     @Override
-    public void calculate(UIComponent component, UIMaster master, Constrains parent) {
-        x.calculate(component, master, parent);
-        y.calculate(component, master, parent);
+    public void calculate(UIComponent component, RenderContext ctx) {
+        x.calculate(component, ctx);
+        y.calculate(component, ctx);
         super.x = x.x();
         super.y = y.y();
 
-        width.calculate(component, master, parent);
-        height.calculate(component, master, parent);
+        width.calculate(component, ctx);
+        height.calculate(component, ctx);
         super.width = width.width();
         super.height = height.height();
     }

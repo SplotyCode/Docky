@@ -4,13 +4,14 @@ import io.github.splotycode.guilib.component.UIComponent;
 import io.github.splotycode.guilib.component.UIMaster;
 import io.github.splotycode.guilib.layout.AbstractConstrains;
 import io.github.splotycode.guilib.layout.Constrains;
+import io.github.splotycode.guilib.render.RenderContext;
 
 public class ParentCenterConstrains extends AbstractConstrains {
 
     @Override
-    public void calculate(UIComponent component, UIMaster master, Constrains parent) {
-        width = parent.width() / 2 - component.getWidth();
-        height = parent.height() / 2 - component.getHeight();
+    public void calculate(UIComponent component, RenderContext ctx) {
+        width = ctx.getParentConstrains().width() / 2 - ctx.width();
+        height = ctx.getParentConstrains().height() / 2 - ctx.heigth();
     }
 
     @Override

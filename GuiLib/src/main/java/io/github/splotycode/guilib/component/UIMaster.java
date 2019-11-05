@@ -12,7 +12,7 @@ public class UIMaster extends UIComponent {
 
     private Window window;
     private StaticConstrains constrains = new StaticConstrains(0, 0, 0, 0);
-    private RenderContext renderContext = new RenderContext(constrains, this, this);
+    private RenderContext renderContext = new RenderContext(constrains, null, this, this);
 
     public UIMaster(Window window) {
         this.window = window;

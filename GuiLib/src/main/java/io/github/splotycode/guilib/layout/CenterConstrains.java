@@ -8,8 +8,8 @@ public class CenterConstrains extends AbstractConstrains {
 
     @Override
     public void calculate(UIComponent component, RenderContext ctx) {
-        width = master.windowWidth() / 2 - component.getWidth();
-        height = master.windowHeight() / 2 - component.getHeight();
+        width = ctx.windowWidth() / 2 - ctx.width();
+        height = ctx.windowHeigth() / 2 - ctx.heigth();
     }
 
     @Override

@@ -54,10 +54,11 @@ public class UIComponent {
 
             boolean init = childCtx.getMaster() == null;
             childCtx.setMaster(ctx.getMaster());
+            childCtx.setParentConstrains(ctx.getConstrains());
 
             Constrains cons = childCtx.getConstrains();
 
-            cons.calculate(child, childCtx.getMaster(), ctx.getConstrains());
+            cons.calculate(child, childCtx);
             if (init) {
                 init(childCtx);
             }

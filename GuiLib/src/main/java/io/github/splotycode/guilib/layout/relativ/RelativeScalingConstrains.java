@@ -4,6 +4,7 @@ import io.github.splotycode.guilib.component.UIComponent;
 import io.github.splotycode.guilib.component.UIMaster;
 import io.github.splotycode.guilib.layout.AbstractConstrains;
 import io.github.splotycode.guilib.layout.Constrains;
+import io.github.splotycode.guilib.render.RenderContext;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -27,7 +28,8 @@ public class RelativeScalingConstrains extends AbstractConstrains {
     }
 
     @Override
-    public void calculate(UIComponent component, UIMaster master, Constrains parent) {
+    public void calculate(UIComponent component, RenderContext ctx) {
+        Constrains parent = ctx.getParentConstrains();
         x = parent.x() + scaleX * parent.width();
         y = parent.y() + scaleY * parent.height();
         width = scaleWidth * parent.width();
