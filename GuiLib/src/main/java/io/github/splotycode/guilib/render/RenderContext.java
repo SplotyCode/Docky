@@ -38,6 +38,10 @@ public class RenderContext {
     }
 
     public boolean mouseOver() {
+        return mouseOver(constrains);
+    }
+
+    public boolean mouseOver(Constrains constrains) {
         InputController controller =  getInputController();
         float mouseX = controller.getMouseX();
         float mouseY = controller.getMouseY();
@@ -50,11 +54,19 @@ public class RenderContext {
      * 1) This Component is locked regardless if it is not mouseover
      * 2) The mouse button is clicked on this element and can be locked
      */
-    public boolean lockClick(int mouseButton) {
+    public boolean lockClick(int mouseButton, Constrains constrains) {
         if (getInputController().isMouseLocked(inputUser)) {
             return true;
         }
-        return mouseOver() && getInputController().isClicked(mouseButton) && getInputController().tryLockMouse(inputUser, mouseButton);
+        return mouseOver(constrains) && getInputController().isClicked(mouseButton) && getInputController().tryLockMouse(inputUser, mouseButton);
+    }
+
+    public boolean lockClick(Constrains constrains) {
+        return lockClick(GLFW.GLFW_MOUSE_BUTTON_LEFT, constrains);
+    }
+
+    public boolean lockClick(int mouseButton) {
+        return lockClick(mouseButton, constrains);
     }
 
     public boolean lockClick() {

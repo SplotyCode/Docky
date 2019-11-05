@@ -1,9 +1,7 @@
 package io.github.splotycode.guilib.layout.relativ;
 
 import io.github.splotycode.guilib.component.UIComponent;
-import io.github.splotycode.guilib.component.UIMaster;
-import io.github.splotycode.guilib.layout.AbstractConstrains;
-import io.github.splotycode.guilib.layout.Constrains;
+import io.github.splotycode.guilib.layout.contrains.AbstractConstrains;
 import io.github.splotycode.guilib.render.RenderContext;
 
 public class ParentCenterConstrains extends AbstractConstrains {

@@ -1,20 +1,23 @@
 package io.github.splotycode.guilib.layout.relativ;
 
 import io.github.splotycode.guilib.component.UIComponent;
-import io.github.splotycode.guilib.component.UIMaster;
-import io.github.splotycode.guilib.layout.AbstractConstrains;
+import io.github.splotycode.guilib.layout.contrains.AbstractConstrains;
 import io.github.splotycode.guilib.layout.Constrains;
 import io.github.splotycode.guilib.render.RenderContext;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 @AllArgsConstructor
+@Setter
+@Getter
 public class RelativeScalingConstrains extends AbstractConstrains {
 
-    public static RelativeScalingConstrains position(float scaleX, float scaleY) {
+    public static RelativeScalingConstrains size(float scaleX, float scaleY) {
         return new RelativeScalingConstrains(scaleX, scaleY, 0, 0);
     }
 
-    public static RelativeScalingConstrains size(float scaleWidth, float scaleHeight) {
+    public static RelativeScalingConstrains position(float scaleWidth, float scaleHeight) {
         return new RelativeScalingConstrains(0, 0, scaleWidth, scaleHeight);
     }
 

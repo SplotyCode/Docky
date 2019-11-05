@@ -5,8 +5,10 @@ import io.github.splotycode.guilib.render.RenderContext;
 
 public interface Layout {
 
-    void add(UIComponent component);
-    void remove(UIComponent component);
+    default void add(UIComponent component) {}
+    default void remove(UIComponent component) {}
+
+    void preCalculate(RenderContext ctx);
 
     void calculate(Constrains constrains, RenderContext ctx);
 

@@ -4,8 +4,10 @@ import io.github.splotycode.guilib.GuiEngine;
 import io.github.splotycode.guilib.component.UIColor;
 import io.github.splotycode.guilib.component.UILabel;
 import io.github.splotycode.guilib.component.UIMaster;
+import io.github.splotycode.guilib.control.HorizontalSlider;
 import io.github.splotycode.guilib.control.Slider;
 import io.github.splotycode.guilib.font.FontFile;
+import io.github.splotycode.guilib.layout.relativ.RelativeFullConstrains;
 import io.github.splotycode.guilib.layout.relativ.RelativeScalingConstrains;
 import io.github.splotycode.guilib.window.Window;
 import org.lwjgl.system.Configuration;
@@ -22,8 +24,10 @@ public class Docky {
         UIMaster master = new Window(engine).createFullScreen("Docky").getMaster();
         engine.loadFont("arial", "io/github/splotycode/guilib/font/arial");
 
-        master.add(new Slider(50, 100, UIColor.BLUE, UIColor.BLACK, 20), RelativeScalingConstrains.size(0.5f, 0.5f));
-        master.add(new UILabel("$Hje{l}log!_-", "arial", UIColor.BLUE), new RelativeScalingConstrains(0.5f));
+        //master.add(new Slider(50, 100, UIColor.BLUE, UIColor.BLACK, 20), RelativeScalingConstrains.size(0.5f, 0.5f));
+        //master.add(new UILabel("$Hje{l}log!_-", "arial", UIColor.BLUE), new RelativeScalingConstrains(0.5f));
+        master.add(new HorizontalSlider(new Slider(50, 100, UIColor.BLUE, UIColor.BLACK, 20), new UILabel("$Hje{l}log!_-", "arial", UIColor.BLUE), 0.2f, UIColor.RED), new RelativeFullConstrains());
+
         engine.loop();
     }
 

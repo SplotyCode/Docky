@@ -1,7 +1,7 @@
-package io.github.splotycode.guilib.layout;
+package io.github.splotycode.guilib.layout.contrains;
 
 import io.github.splotycode.guilib.component.UIComponent;
-import io.github.splotycode.guilib.component.UIMaster;
+import io.github.splotycode.guilib.layout.Constrains;
 import io.github.splotycode.guilib.render.RenderContext;
 
 public class MixedConstrains extends AbstractConstrains {

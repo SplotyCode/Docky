@@ -19,6 +19,7 @@ public final class UIColor {
     public static final int WHITE = Color.WHITE.getRGB();
     public static final int BLUE = Color.BLUE.getRGB();
     public static final int YELLOW = Color.YELLOW.getRGB();
+    public static final int RED = Color.RED.getRGB();
     public static final int RED_TRANSPARENT = new Color(255, 0, 0, 255 / 2).getRGB();
 
 }

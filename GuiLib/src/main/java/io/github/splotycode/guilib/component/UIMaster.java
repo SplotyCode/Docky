@@ -1,6 +1,6 @@
 package io.github.splotycode.guilib.component;
 
-import io.github.splotycode.guilib.layout.StaticConstrains;
+import io.github.splotycode.guilib.layout.contrains.StaticConstrains;
 import io.github.splotycode.guilib.render.RenderContext;
 import io.github.splotycode.guilib.window.Window;
 import lombok.Getter;

@@ -1,7 +1,6 @@
-package io.github.splotycode.guilib.layout;
+package io.github.splotycode.guilib.layout.contrains;
 
 import io.github.splotycode.guilib.component.UIComponent;
-import io.github.splotycode.guilib.component.UIMaster;
 import io.github.splotycode.guilib.render.RenderContext;
 import lombok.AllArgsConstructor;
 import lombok.Data;

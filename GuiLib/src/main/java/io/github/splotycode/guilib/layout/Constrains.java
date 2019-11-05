@@ -20,4 +20,8 @@ public interface Constrains {
     boolean calculatesPosition();
     boolean calculatesSize();
 
+    default void setRawPosition(float x, float y) {
+        throw new UnsupportedOperationException();
+    }
+
 }

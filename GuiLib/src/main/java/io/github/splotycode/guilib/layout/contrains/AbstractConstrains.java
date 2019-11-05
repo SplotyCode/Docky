@@ -1,5 +1,6 @@
-package io.github.splotycode.guilib.layout;
+package io.github.splotycode.guilib.layout.contrains;
 
+import io.github.splotycode.guilib.layout.Constrains;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -47,5 +48,11 @@ public abstract class AbstractConstrains implements Constrains {
     @Override
     public boolean calculatesSize() {
         return true;
+    }
+
+    @Override
+    public void setRawPosition(float x, float y) {
+        this.x = x;
+        this.y = y;
     }
 }

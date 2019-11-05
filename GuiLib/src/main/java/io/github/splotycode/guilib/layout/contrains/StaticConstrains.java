@@ -1,7 +1,6 @@
-package io.github.splotycode.guilib.layout;
+package io.github.splotycode.guilib.layout.contrains;
 
 import io.github.splotycode.guilib.component.UIComponent;
-import io.github.splotycode.guilib.component.UIMaster;
 import io.github.splotycode.guilib.render.RenderContext;
 
 public class StaticConstrains extends AbstractConstrains {
@@ -15,11 +14,6 @@ public class StaticConstrains extends AbstractConstrains {
 
     @Override
     public void calculate(UIComponent component, RenderContext ctx) {}
-
-    public void setPosition(float x, float y) {
-        this.x = x;
-        this.y = y;
-    }
 
     public void setSize(float width, float height) {
         this.width = width;
