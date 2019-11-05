@@ -2,10 +2,11 @@ package io.github.splotycode.guilib.layout;
 
 import io.github.splotycode.guilib.component.UIComponent;
 import io.github.splotycode.guilib.component.UIMaster;
+import io.github.splotycode.guilib.render.RenderContext;
 
 public interface Constrains {
 
-    void calculate(UIComponent component, UIMaster master, Constrains parent);
+    void calculate(UIComponent component, RenderContext ctx);
 
     float x();
     float y();

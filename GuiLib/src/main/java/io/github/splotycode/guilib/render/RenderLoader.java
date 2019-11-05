@@ -1,6 +1,7 @@
 package io.github.splotycode.guilib.render;
 
 import io.github.splotycode.mosaik.util.collection.MultiHashMap;
+import io.github.splotycode.mosaik.util.io.IOUtil;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
@@ -46,17 +47,25 @@ public class RenderLoader {
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-        IntBuffer width = BufferUtils.createIntBuffer(1);
-        IntBuffer height = BufferUtils.createIntBuffer(1);
-        IntBuffer comp = BufferUtils.createIntBuffer(1);
-        //ByteBuffer.wrap(IOUtil.loadBytes(IOUtil.resourceToURL(file)))
-        ByteBuffer data = stbi_load(file, width, height, comp, 4);
-        if (data == null) {
-            throw new RuntimeException(file + " " + stbi_failure_reason());
-        }
+        try (MemoryStack stack = stackPush()) {
+            IntBuffer width = stack.mallocInt(1);
+            IntBuffer height = stack.mallocInt(1);
+            IntBuffer comp = stack.mallocInt(1);
 
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width.get(), height.get(), 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-        stbi_image_free(data);
+            byte[] binaryArray = IOUtil.loadBytes(IOUtil.resourceToURL(file));
+
+            ByteBuffer binary = stack.malloc(binaryArray.length);
+            binary.put(binaryArray);
+            binary.flip();
+
+            ByteBuffer data = stbi_load_from_memory(binary, width, height, comp, 4);
+            if (data == null) {
+                throw new RuntimeException(file + " " + stbi_failure_reason());
+            }
+
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width.get(), height.get(), 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+            stbi_image_free(data);
+        }
 
         return id;
     }

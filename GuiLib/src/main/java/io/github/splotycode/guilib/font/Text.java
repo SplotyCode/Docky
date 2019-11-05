@@ -1,6 +1,7 @@
 package io.github.splotycode.guilib.font;
 
 import io.github.splotycode.guilib.GuiEngine;
+import io.github.splotycode.guilib.render.RenderContext;
 import io.github.splotycode.guilib.render.RenderLoader;
 import io.github.splotycode.mosaik.util.collection.ArrayUtil;
 import lombok.AllArgsConstructor;
@@ -27,33 +28,44 @@ public class Text {
     @Setter private Vector3f colour;
 
     private FontFile font;
+    private String fontName;
 
     private float aspectRatio;
 
     public Text(String text, float fontSize, Vector2f position, Vector3f colour, FontFile font) {
+        this(text, fontSize, position, colour);
+        this.font = font;
+    }
+
+    public Text(String text, float fontSize, Vector2f position, Vector3f colour, String fontName) {
+        this(text, fontSize, position, colour);
+        this.fontName = fontName;
+    }
+
+    private Text(String text, float fontSize, Vector2f position, Vector3f colour) {
         this.text = text;
         this.fontSize = fontSize;
         this.position = position;
         this.colour = colour;
-        this.font = font;
     }
 
-    public void renderNoUpdate() {
-        GuiEngine.INSTANCE.getRenderer().render(this);
+
+    public void renderNoUpdate(RenderContext ctx) {
+        ctx.getWindow().getFontRenderer().render(this);
     }
 
-    public void render() {
-        float current = GuiEngine.INSTANCE.getWindows().get(0).acpectRatio();
+    public void render(RenderContext ctx) {
+        float current = ctx.getWindowAspectRatio();
         if (aspectRatio != current) {
-            load(current);
+            load(ctx, current);
         }
-        renderNoUpdate();
+        renderNoUpdate(ctx);
     }
 
-    public void setFontSize(float fontSize) {
+    public void setFontSize(RenderContext ctx, float fontSize) {
         if (this.fontSize != fontSize) {
             this.fontSize = fontSize;
-            reload();
+            reload(ctx);
         }
     }
 
@@ -61,20 +73,25 @@ public class Text {
         this.text = text;
     }
 
-    public void setText(String text) {
+    public void setText(RenderContext ctx, String text) {
         if (!this.text.equals(text)) {
             setTextNoUpdate(text);
-            reload();
+            reload(ctx);
         }
     }
 
     /* Position and color change don't need a reload*/
-    public void reload() {
-        load(GuiEngine.INSTANCE.getWindows().get(0).acpectRatio());
+    public void reload(RenderContext ctx) {
+        load(ctx, ctx.getWindowAspectRatio());
     }
 
-    public void load(float aspectRatio) {
+    public void load(RenderContext ctx, float aspectRatio) {
+        if (font == null) {
+            font = ctx.getEngine().getFont(fontName);
+        }
+
         this.aspectRatio = aspectRatio;
+
         float cursorX = 0;
         List<Float> vertices = new ArrayList<>();
         List<Float> textureCoords = new ArrayList<>();
@@ -95,10 +112,10 @@ public class Text {
             cursorX += font.realSpaceWidth(aspectRatio) * fontSize;
         }
         if (data != null) {
-            GuiEngine.INSTANCE.getLoader().deleteVao(textMeshVao);
+           ctx.getLoader().deleteVao(textMeshVao);
         }
         data = new TextMeshData(ArrayUtil.toFloatArray(vertices), ArrayUtil.toFloatArray(textureCoords));
-        textMeshVao = GuiEngine.INSTANCE.getLoader().loadToVAO(data.getVertexPositions(), data.getTextureCoords());
+        textMeshVao = ctx.getLoader().loadToVAO(data.getVertexPositions(), data.getTextureCoords());
     }
 
     private void addVerticesForCharacter(List<Float> vertices, float cursorX, CharData charData) {

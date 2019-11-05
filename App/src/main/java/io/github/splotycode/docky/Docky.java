@@ -2,44 +2,32 @@ package io.github.splotycode.docky;
 
 import io.github.splotycode.guilib.GuiEngine;
 import io.github.splotycode.guilib.component.UIColor;
-import io.github.splotycode.guilib.component.UiBlock;
-import io.github.splotycode.guilib.input.KeyData;
+import io.github.splotycode.guilib.component.UILabel;
+import io.github.splotycode.guilib.component.UIMaster;
+import io.github.splotycode.guilib.control.Slider;
+import io.github.splotycode.guilib.font.FontFile;
 import io.github.splotycode.guilib.layout.relativ.RelativeScalingConstrains;
 import io.github.splotycode.guilib.window.Window;
-import io.github.splotycode.mosaik.util.ThreadUtil;
 import org.lwjgl.system.Configuration;
 
-import java.util.Map;
-
-import static org.lwjgl.opengl.GL11.glClearColor;
+import java.io.IOException;
 
 public class Docky {
 
-    private Window window;
+    private GuiEngine engine = new GuiEngine();
 
-    public void run() {
+    public void run() throws IOException {
         Configuration.DEBUG.set(true);
-        GuiEngine.INSTANCE.initialize();
-        window = GuiEngine.INSTANCE.createWindow("Docky");
-        GuiEngine.INSTANCE.start();
-        loop();
+        engine.initialize();
+        UIMaster master = new Window(engine).createFullScreen("Docky").getMaster();
+        engine.loadFont("arial", "io/github/splotycode/guilib/font/arial");
 
-        GuiEngine.INSTANCE.shutdown();
+        master.add(new Slider(50, 100, UIColor.BLUE, UIColor.BLACK, 20), RelativeScalingConstrains.size(0.5f, 0.5f));
+        master.add(new UILabel("$Hje{l}log!_-", "arial", UIColor.BLUE), new RelativeScalingConstrains(0.5f));
+        engine.loop();
     }
 
-    private void loop() {
-        UiBlock block = new UiBlock(UIColor.BLACK);
-        block.add(new UiBlock(UIColor.BLUE), RelativeScalingConstrains.size(0.5f, 1));
-        window.getMaster().add(block, RelativeScalingConstrains.size(0.5f, 0.5f));
-
-        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-        while (!window.isClosing()) {
-            window.handleInput();
-            window.fullRender();
-        }
-    }
-
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         new Docky().run();
     }
 

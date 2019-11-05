@@ -1,6 +1,8 @@
 package io.github.splotycode.guilib.window;
 
+import io.github.splotycode.guilib.GuiEngine;
 import io.github.splotycode.guilib.component.UIMaster;
+import io.github.splotycode.guilib.font.FontRenderer;
 import io.github.splotycode.guilib.input.InputController;
 import io.github.splotycode.guilib.render.WindowRenderer;
 import lombok.Getter;
@@ -8,6 +10,7 @@ import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
+import org.lwjgl.opengl.GLCapabilities;
 import org.lwjgl.system.MemoryStack;
 
 import java.nio.IntBuffer;
@@ -47,17 +50,30 @@ public class Window {
     private WindowRenderer renderer = new WindowRenderer(this);
     private UIMaster master = new UIMaster(this);
     private InputController inputController = new InputController(this);
+    private FontRenderer fontRenderer;
+
+    private GuiEngine engine;
 
     private long windowID;
+    private GLCapabilities capabilities;
+
     private int width;
     private int height;
 
-    public void createFullScreen(String title) {
-        GLFWVidMode screen = getScreen();
-        create(screen.width(), screen.height(), title);
+    private CloseOperation closeOperation = CloseOperation.SHUTDOWN;
+
+    public Window(GuiEngine engine) {
+        this.engine = engine;
+        engine.getWindows().add(this);
     }
 
-    public void create(int width, int height, String title) {
+    /* Fullscreen but not maximised */
+    public Window createFullScreen(String title) {
+        GLFWVidMode screen = getScreen();
+        return create(screen.width(), screen.height(), title);
+    }
+
+    public Window create(int width, int height, String title) {
         resize0(width, height);
 
         windowID = glfwCreateWindow(width, height, title, NULL, NULL);
@@ -73,14 +89,31 @@ public class Window {
 
         /* Enable v-sync */
         glfwSwapInterval(1);
-        glfwShowWindow(windowID);
-        GL.createCapabilities();
+
+        capabilities = GL.createCapabilities();
+        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+
+        GLFW.glfwSetWindowCloseCallback(windowID, windowID -> {
+            switch (closeOperation) {
+                case SHUTDOWN:
+                    engine.shutdown();
+                    break;
+                case CLOSE:
+                    engine.getWindows().remove(this);
+                    destroy();
+                    break;
+            }
+        });
         glfwSetWindowSizeCallback(windowID, (window, w, h) -> {
             resize0(w, h);
             normalize();
         });
         normalize();
         inputController.setup();
+        fontRenderer = new FontRenderer();
+
+        glfwShowWindow(windowID);
+        return this;
     }
 
     public void resize(int width, int height) {
@@ -148,12 +181,14 @@ public class Window {
     }
 
     public void destroy() {
+        fontRenderer.shutdown();
         glfwFreeCallbacks(windowID);
         glfwDestroyWindow(windowID);
     }
 
     public void useThis() {
         glfwMakeContextCurrent(windowID);
+        GL.setCapabilities(capabilities);
     }
 
 }

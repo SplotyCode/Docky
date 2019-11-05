@@ -21,6 +21,10 @@ public class InputController implements GLFWKeyCallbackI {
 
     private HashMap<Integer, PressData> inputs = new HashMap<>();
 
+    private InputUser lockedMouseUser;
+    private InputUser lockedKeyboardUser;
+    private int releaseLockedButton = -1;
+
     public InputController(Window window) {
         this.window = window;
     }
@@ -53,6 +57,78 @@ public class InputController implements GLFWKeyCallbackI {
             System.out.println(key.getKey() + " " + key.getValue().getState() + " " +  key.getValue().getPressedTicks() + " " + key.getValue().getRepressed());
         }
         System.out.println("end");*/
+        if (lockedMouseUser != null && releaseLockedButton != -1 && !inputs.containsKey(releaseLockedButton)) {
+            unlockMouse(lockedMouseUser);
+        }
+    }
+
+    public boolean isMouseLocked(InputUser user) {
+        return lockedMouseUser != null && lockedMouseUser == user;
+    }
+
+    public boolean isKeyboardLocked(InputUser user) {
+        return lockedMouseUser != null && lockedMouseUser == user;
+    }
+
+    public boolean isMouseLocked() {
+        return lockedMouseUser != null;
+    }
+
+    public boolean isKeyboardLocked() {
+        return lockedMouseUser != null;
+    }
+
+    public boolean tryLockMouse(InputUser user, int releaseLockedButton) {
+        if (tryLockMouse(user)) {
+            this.releaseLockedButton = releaseLockedButton;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean tryLockMouse(InputUser user) {
+        if (lockedMouseUser == null || lockedMouseUser == user) {
+            if (lockedMouseUser != user) {
+                user.onLock(this);
+                lockedMouseUser = user;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public boolean unlockMouse(InputUser user) {
+        if (lockedMouseUser != user) {
+            return false;
+        }
+        user.onUnlock(this);
+        lockedMouseUser = null;
+        releaseLockedButton = -1;
+        return true;
+    }
+
+    public boolean tryLockKeyboard(InputUser user) {
+        if (lockedKeyboardUser == null || lockedKeyboardUser == user) {
+            if (lockedKeyboardUser != user) {
+                user.onLock(this);
+                lockedKeyboardUser = user;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public boolean unlockKeyboard(InputUser user) {
+        if (lockedKeyboardUser != user) {
+            return false;
+        }
+        user.onUnlock(this);
+        lockedKeyboardUser = null;
+        return true;
+    }
+
+    public boolean isClicked(int button) {
+        return inputs.containsKey(button);
     }
 
     public boolean isLeftClicked() {
@@ -60,14 +136,14 @@ public class InputController implements GLFWKeyCallbackI {
     }
 
     public boolean isRigthClicked() {
-        return rigthMouseData() != null;
+        return rightMouseData() != null;
     }
 
     public PressData leftMouseData() {
         return inputs.get(GLFW.GLFW_MOUSE_BUTTON_LEFT);
     }
 
-    public PressData rigthMouseData() {
+    public PressData rightMouseData() {
         return inputs.get(GLFW.GLFW_MOUSE_BUTTON_LEFT);
     }
 
